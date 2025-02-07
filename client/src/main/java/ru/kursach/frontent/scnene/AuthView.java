@@ -10,8 +10,12 @@ public class AuthView {
     private TextField login, password;
     @FXML
     private Text welcomeText;
-    private final AuthService service = new AuthService(login, password, welcomeText);
+    private AuthService service ;
 
+    @FXML
+    private void initialize() {
+        service = new AuthService(login, password, welcomeText);
+    }
     @FXML
     public void onLoginButtonClick() {
         service.authorization();

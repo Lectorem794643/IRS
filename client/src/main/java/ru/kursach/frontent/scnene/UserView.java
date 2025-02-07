@@ -32,11 +32,12 @@ public class UserView implements UUIDReceiver {
     private TableColumn<Tax, String> columnNameTax, columnSumTax, columnDataTax, columnStatusTax;
 
     private final UserClient client = new UserClient();
-    private final RequestService serviceRequest = new RequestService(client, tableViewRequest,requestSubjectRequest, bodySubjectRequest, textErrorRequest, columnThemeRequest, columnDateRequest, columnStateRequest, columnBodyRequest);
-    private final TaxService serviceTax = new TaxService(client, tableViewTax, columnNameTax, columnSumTax, columnDataTax, columnStatusTax, textErrorTax);
-
+    private RequestService serviceRequest;
+    private TaxService serviceTax;
     @FXML
     public void initialize() {
+        serviceRequest = new RequestService(client, tableViewRequest,requestSubjectRequest, bodySubjectRequest, textErrorRequest, columnThemeRequest, columnDateRequest, columnStateRequest, columnBodyRequest);
+        serviceTax = new TaxService(client, tableViewTax, columnNameTax, columnSumTax, columnDataTax, columnStatusTax, textErrorTax);
         serviceRequest.init();
         serviceTax.init();
     }
