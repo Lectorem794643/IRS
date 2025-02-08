@@ -1,6 +1,7 @@
 package ru.kursach.frontent.scnene.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
@@ -9,14 +10,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
-import ru.kursach.frontent.http.Client;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.List;
 
 @Slf4j
 public abstract class BaseService<T> {
-    protected Client client; // Класс client
+    private final ObjectMapper objectMapper = new ObjectMapper();
     protected Text textError;
     protected abstract String getClientResponse() throws IOException; // Метод для получения данных (чтобы каждый сервис мог его переопределить)
 
@@ -49,6 +49,7 @@ public abstract class BaseService<T> {
 
     protected void fetchData() {
         try {
+            textError.setText("");
             loadData();
         } catch (IOException e) {
             log.warn("Ошибка при получении данных {}", e.getMessage());
@@ -61,8 +62,10 @@ public abstract class BaseService<T> {
         log.info("Запрос на получение данных");
         String clientResponse = getClientResponse();
         log.debug(clientResponse);
-        ObservableList<T> data = FXCollections.observableArrayList(
-                new ObjectMapper().readValue(clientResponse, getTableViewDataClass()));
+        List<T> list = objectMapper.readValue(clientResponse,
+                TypeFactory.defaultInstance().constructCollectionType(List.class, getTableViewDataClass()));
+
+        ObservableList<T> data = FXCollections.observableArrayList(list);
         getTableView().setItems(data); // Передаем класс данных для загрузки в TableView
     }
 

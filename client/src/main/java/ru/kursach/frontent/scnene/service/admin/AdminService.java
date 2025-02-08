@@ -1,7 +1,12 @@
 package ru.kursach.frontent.scnene.service.admin;
 
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.kursach.frontent.dto.User;
 import ru.kursach.frontent.dto.enams.UserRole;
@@ -9,42 +14,37 @@ import ru.kursach.frontent.http.api.AdminClient;
 import ru.kursach.frontent.scnene.service.BaseService;
 
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
+@AllArgsConstructor
 public class AdminService extends BaseService<User> {
     private final AdminClient client = new AdminClient();
     private TableView<User> tableView;
     private TextField fioField, loginField, emailField, phoneField;
     private ChoiceBox<UserRole> roleBox;
-    private User duplicate = new User();
+    private TableColumn<User, String> columnFIO, columnLogin, columnRole, columnPhone, columnEmail;
+    private Text errorText;
+    private final User duplicate = new User();
 
-    public void initialize(TableView<User> tableView, TableColumn<User, String> columnFIO, TableColumn<User, String> columnLogin, TableColumn<User, String> columnRole, TableColumn<User, String> columnPhone, TableColumn<User, String> columnEmail, TextField fioField, TextField loginField, TextField emailField, TextField phoneField, ChoiceBox<UserRole> roleBox) {
-        this.tableView = tableView;
-        this.fioField = fioField;
-        this.loginField = loginField;
-        this.emailField = emailField;
-        this.phoneField = phoneField;
-        this.roleBox = roleBox;
-
+    public void initialize(){
         columnFIO.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
         columnRole.setCellValueFactory(new PropertyValueFactory<>("authority"));
-        columnPhone.setCellValueFactory(new PropertyValueFactory<>("tel"));
+        columnPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleBox.getItems().addAll(UserRole.values());
-
+        super.textError = errorText;
         addListeners();
     }
 
     public void selectUser() {
         User selectedUser = tableView.getSelectionModel().getSelectedItem();
         if (selectedUser != null) {
-            duplicate = new User(selectedUser.getId(), selectedUser.getName(), selectedUser.getLogin(), selectedUser.getEmail(), selectedUser.getTel(), selectedUser.getAuthority());
+            duplicate.SetUser(selectedUser);
             fioField.setText(selectedUser.getName());
             loginField.setText(selectedUser.getLogin());
             emailField.setText(selectedUser.getEmail());
-            phoneField.setText(selectedUser.getTel());
+            phoneField.setText(selectedUser.getPhone());
             roleBox.setValue(selectedUser.getAuthority());
         }
     }
@@ -100,7 +100,7 @@ public class AdminService extends BaseService<User> {
                 selectedUser.setName(fioField.getText());
                 selectedUser.setLogin(loginField.getText());
                 selectedUser.setEmail(emailField.getText());
-                selectedUser.setTel(phoneField.getText());
+                selectedUser.setPhone(phoneField.getText());
                 selectedUser.setAuthority(roleBox.getValue());
 
                 log.debug("Обновление пользователя: {}", selectedUser);
@@ -131,7 +131,7 @@ public class AdminService extends BaseService<User> {
 
     @Override
     protected Class<User> getTableViewDataClass() {
-        return null;
+        return User.class;
     }
 
 
@@ -148,17 +148,20 @@ public class AdminService extends BaseService<User> {
     }
 
     private void addListeners() {
-        addFieldListener(fioField, () -> duplicate.getName());
-        addFieldListener(loginField, () -> duplicate.getLogin());
-        addFieldListener(emailField, () -> duplicate.getEmail());
-        addFieldListener(phoneField, () -> duplicate.getTel());
-        addFieldListener(roleBox, () -> duplicate.getAuthority());
+        addFieldListener(fioField, duplicate::getName);
+        addFieldListener(loginField, duplicate::getLogin);
+        addFieldListener(emailField, duplicate::getEmail);
+        addFieldListener(phoneField, duplicate::getPhone);
+        addFieldListener(roleBox, duplicate::getAuthority);
     }
 
     public void passwordReset() {
-    }
-
-    public void setUuid(UUID uuid) {
-
+        User selectedUser = tableView.getSelectionModel().getSelectedItem();
+        try {
+            client.passwordReset(selectedUser);
+        } catch (IOException e) {
+            log.warn("Ошибка удаления пользователя: {}", e.getLocalizedMessage());
+            textError.setText(e.getMessage());
+        }
     }
 }

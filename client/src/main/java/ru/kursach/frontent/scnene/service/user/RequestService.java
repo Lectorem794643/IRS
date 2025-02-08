@@ -1,7 +1,5 @@
 package ru.kursach.frontent.scnene.service.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.collections.FXCollections;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -18,7 +16,7 @@ import java.io.IOException;
 
 @Slf4j
 @AllArgsConstructor
-public class RequestService extends BaseService <Request>{
+public class RequestService extends BaseService<Request> {
     private UserClient client;
     private TableView<Request> tableView;
     private TextField requestSubject;
@@ -32,7 +30,11 @@ public class RequestService extends BaseService <Request>{
         columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         columnState.setCellValueFactory(new PropertyValueFactory<>("status"));
         columnBody.setCellValueFactory(new PropertyValueFactory<>("body"));
-        super.textError=textError;
+        super.textError = textError;
+        client.addPropertyChangeListener(evt -> {
+                    if ("uuid".equals(evt.getPropertyName())) update();
+                }
+        );
     }
 
     public void update() {

@@ -104,7 +104,7 @@ public class WorkerService {
     }
 
     public boolean updateUser(UUID id, UserDto user) {
-        int rowsAffected = jdbcTemplate.update(UPDATE_USER_SQL, user.getName(), user.getEmail(), user.getPhone(), id);
+        int rowsAffected = jdbcTemplate.update(UPDATE_USER_SQL, user.getName(), user.getEmail(), user.getTel(), id);
         return rowsAffected > 0;
     }
 

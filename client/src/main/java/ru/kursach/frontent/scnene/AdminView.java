@@ -5,6 +5,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
 import ru.kursach.frontent.dto.User;
 import ru.kursach.frontent.dto.enams.UserRole;
@@ -15,7 +16,6 @@ import java.util.UUID;
 
 @Slf4j
 public class AdminView implements UUIDReceiver {
-    private final AdminService service = new AdminService();
     @FXML
     private TableView<User> tableView;
     @FXML
@@ -24,10 +24,13 @@ public class AdminView implements UUIDReceiver {
     private TextField fioField, loginField, emailField, phoneField;
     @FXML
     private ChoiceBox<UserRole> roleBox;
+    @FXML
+    private Text errorText;
+    private AdminService service;
 
     public void initialize() {
-        service.initialize(tableView, columnFIO, columnLogin, columnRole, columnPhone,
-                columnEmail, fioField, loginField, emailField, phoneField, roleBox);
+        service = new AdminService(tableView, fioField, loginField, emailField, phoneField, roleBox, columnFIO, columnLogin, columnRole, columnPhone, columnEmail, errorText);
+        service.initialize();
     }
 
     public void selectUser() {
@@ -38,20 +41,23 @@ public class AdminView implements UUIDReceiver {
         service.addUser();
     }
 
-    public void update(){
+    public void update() {
         service.update();
     }
 
     public void deleteUser() {
         service.deleteUser();
     }
+
     public void updateUser() {
         service.updateUser();
     }
-    public void passwordReset(){
+
+    public void passwordReset() {
         service.passwordReset();
     }
-    public void canceled(){
+
+    public void canceled() {
         service.unselectUser();
     }
 
@@ -61,7 +67,5 @@ public class AdminView implements UUIDReceiver {
 
 
     @Override
-    public void setUUID(UUID uuid) {
-        service.setUuid(uuid);
-    }
+    public void setUUID(UUID uuid) {}
 }

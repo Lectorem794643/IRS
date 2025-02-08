@@ -3,6 +3,8 @@ package ru.kursach.frontent.http;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,6 +21,7 @@ public class Client {
     private final ObjectMapper objectMapper;
     protected UUID uuid;
     protected String baseUrl = "http://localhost:8080";
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public Client() {
         this.objectMapper = new ObjectMapper();
@@ -30,6 +33,12 @@ public class Client {
 
     public String put(String url, Object object) throws IOException {
         return sendRequestWithBody(url, "PUT", object);
+    }
+    public String put(String url) throws IOException {
+        HttpURLConnection connection = createConnection(url, "PUT", Map.of(
+                "Accept", APPLICATION_JSON
+        ));
+        return executeRequest(connection);
     }
 
     public String get(String url) throws IOException {
@@ -96,5 +105,10 @@ public class Client {
 
     public void setUUID(UUID uuid) {
         this.uuid = uuid;
+        support.firePropertyChange("uuid", 0, uuid);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
     }
 }

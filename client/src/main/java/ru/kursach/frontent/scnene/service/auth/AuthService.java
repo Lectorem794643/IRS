@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.kursach.frontent.HelloApplication;
 import ru.kursach.frontent.dto.AuthObject;
+import ru.kursach.frontent.dto.AuthRequest;
 import ru.kursach.frontent.dto.enams.UserRole;
 import ru.kursach.frontent.http.api.AuthorizationsClient;
 
@@ -24,12 +25,13 @@ public class AuthService  {
     public void authorization() {
         log.debug("Вход в систему");
         try {
-            AuthObject authObject = getUserRole(login.getText(), password.getText());
+            AuthObject authObject = getUserRole(new AuthRequest(login.getText(), password.getText()));
             UserRole role = authObject.getRole();
             if (role == null) {
                 throw new IllegalArgumentException("Некорректная роль");
             }
             log.debug("Авторизованная роль: {}", role);
+            log.debug("uuid: {}", authObject.getId());
             log.info("Пользователь авторизован с ролью: {}", role);
             openSceneForRole(role, authObject.getId());
         } catch (IOException e) {
@@ -41,8 +43,8 @@ public class AuthService  {
         }
     }
 
-    private AuthObject getUserRole(String login, String password) throws IOException {
-        return new ObjectMapper().readValue(client.getUser(login, password), AuthObject.class);
+    private AuthObject getUserRole(AuthRequest request) throws IOException {
+        return new ObjectMapper().readValue(client.getUser(request), AuthObject.class);
     }
 
     private void openSceneForRole(UserRole role, UUID uuid) {

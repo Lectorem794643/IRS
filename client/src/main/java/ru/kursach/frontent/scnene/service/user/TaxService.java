@@ -26,6 +26,10 @@ public class TaxService extends BaseService<Tax> {
         columnDataTax.setCellValueFactory(new PropertyValueFactory<>("payingDeadline"));
         columnStatusTax.setCellValueFactory(new PropertyValueFactory<>("status"));
         super.textError = textError;
+        client.addPropertyChangeListener(evt -> {
+                    if ("uuid".equals(evt.getPropertyName())) update();
+                }
+        );
     }
 
     public void update() {

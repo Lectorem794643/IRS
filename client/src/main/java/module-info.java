@@ -6,6 +6,7 @@ module ru.kursach.frontent {
     requires org.slf4j;
     requires ch.qos.logback.classic;
     requires com.fasterxml.jackson.databind;
+    requires java.desktop;
 
 
     opens ru.kursach.frontent.dto to com.fasterxml.jackson.databind, javafx.base;

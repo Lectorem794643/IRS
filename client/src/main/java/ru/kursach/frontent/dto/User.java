@@ -9,20 +9,36 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor
 @ToString
 public class User {
     @JsonProperty("id")
     private UUID id;
-    @NonNull @JsonProperty("name")
+    @JsonProperty("name")
     private String name;
-    @NonNull @JsonProperty("login")
+    @JsonProperty("login")
     private String login;
-    @NonNull @JsonProperty("email")
+    @JsonProperty("email")
     private String email;
-    @NonNull @JsonProperty("tel")
-    private String tel;
-    @NonNull @JsonProperty("authority")
+    @JsonProperty("tel")
+    private String phone;
+    @JsonProperty("authority")
     private UserRole authority;
+
+    public User(String name, String login, String email, String phone, UserRole authority) {
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.phone = phone;
+        this.authority = authority;
+    }
+
+    public void SetUser(@NonNull User user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.login = user.login;
+        this.email = user.email;
+        this.phone = user.phone;
+        this.authority = user.authority;
+    }
 }

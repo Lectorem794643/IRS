@@ -49,7 +49,7 @@ public class AdminController {
         log.info("Creating user: {}", userDto);
         boolean isCreated = adminService.createUser(
                 userDto.getName(), userDto.getAuthority(), userDto.getLogin(),
-                userDto.getEmail(), userDto.getPhone());
+                userDto.getEmail(), userDto.getTel());
 
         return isCreated
                 ? ResponseEntity.status(HttpStatus.CREATED).body("Пользователь успешно создан")
@@ -65,7 +65,7 @@ public class AdminController {
         log.info("Updating user with id={}: {}", id, userDto);
         boolean isUpdated = adminService.updateUser(
                 id, userDto.getName(), userDto.getAuthority(),
-                userDto.getLogin(), userDto.getEmail(), userDto.getPhone());
+                userDto.getLogin(), userDto.getEmail(), userDto.getTel());
 
         return isUpdated
                 ? ResponseEntity.ok("Пользователь успешно обновлен")

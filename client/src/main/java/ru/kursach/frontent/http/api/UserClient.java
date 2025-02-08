@@ -1,21 +1,29 @@
 package ru.kursach.frontent.http.api;
 
+import ru.kursach.frontent.dto.Request;
 import ru.kursach.frontent.http.Client;
 
 import java.io.IOException;
 
 public class UserClient extends Client {
-    private final String apiUrl = baseUrl + "/user/";
+    private String apiUrl;
+    public UserClient() {
+        addPropertyChangeListener(evt -> {
+            if ("uuid".equals(evt.getPropertyName())) {
+                apiUrl = baseUrl + "/user/" + uuid + "/";
+            }
+        });
+    }
 
-    public String putRequest(Object request) throws IOException {
-        return post(apiUrl + "create-request?uid=" + uuid, request);
+    public String putRequest(Request request) throws IOException {
+        return post(apiUrl + "requests", request);
     }
 
     public String getRequest() throws IOException {
-        return get(apiUrl + "get-requests?uid=" + uuid);
+        return get(apiUrl + "requests");
     }
 
     public String getTax() throws IOException {
-        return get(apiUrl + "get-tax?uid=" + uuid);
+        return get(apiUrl + "tax-assessments");
     }
 }

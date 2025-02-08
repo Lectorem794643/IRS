@@ -22,7 +22,7 @@ public class UserService extends BaseService<User> {
     public void init() {
         columnEmailUsers.setCellValueFactory(new PropertyValueFactory<>("email"));
         columnFIOUsers.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnPhoneUsers.setCellValueFactory(new PropertyValueFactory<>("tel"));
+        columnPhoneUsers.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
     }
 
@@ -39,7 +39,7 @@ public class UserService extends BaseService<User> {
 
     private void addListeners() {
         addFieldListener(fioUsers, duplicate::getName);
-        addFieldListener(phoneUsers, duplicate::getTel);
+        addFieldListener(phoneUsers, duplicate::getPhone);
         addFieldListener(emailUsers, duplicate::getEmail);
     }
 
