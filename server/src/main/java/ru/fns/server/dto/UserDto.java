@@ -12,6 +12,6 @@ public class UserDto {
     private String authority;
     private String login;
     private String email;
-    private String phone;
+    private String tel;
 }
 
