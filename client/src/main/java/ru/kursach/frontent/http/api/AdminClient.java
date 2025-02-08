@@ -4,16 +4,19 @@ import ru.kursach.frontent.dto.User;
 import ru.kursach.frontent.http.Client;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class AdminClient extends Client {
     private final String apiUrl = baseUrl + "/admin/users";
 
     public String getAllUser() throws IOException {
-        return get(apiUrl+"?limit=15");
+        return get(apiUrl + "?limit=15");
     }
 
     public String getUser(String name) throws IOException {
-        return get(apiUrl + name);
+        String encodedUrl = URLEncoder.encode(name, StandardCharsets.UTF_8);
+        return get(apiUrl + "?name=" + encodedUrl);
     }
 
     public String addUser(User user) throws IOException {
@@ -29,6 +32,6 @@ public class AdminClient extends Client {
     }
 
     public String passwordReset(User selectedUser) throws IOException {
-        return put(apiUrl+"/"+selectedUser.getId()+"/reset-password");
+        return put(apiUrl + "/" + selectedUser.getId() + "/reset-password");
     }
 }

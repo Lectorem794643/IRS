@@ -21,7 +21,7 @@ public class AdminView implements UUIDReceiver {
     @FXML
     private TableColumn<User, String> columnFIO, columnLogin, columnRole, columnPhone, columnEmail;
     @FXML
-    private TextField fioField, loginField, emailField, phoneField;
+    private TextField fioField, loginField, emailField, phoneField, findForNameField;
     @FXML
     private ChoiceBox<UserRole> roleBox;
     @FXML
@@ -29,7 +29,7 @@ public class AdminView implements UUIDReceiver {
     private AdminService service;
 
     public void initialize() {
-        service = new AdminService(tableView, fioField, loginField, emailField, phoneField, roleBox, columnFIO, columnLogin, columnRole, columnPhone, columnEmail, errorText);
+        service = new AdminService(tableView, fioField, loginField, emailField, phoneField, roleBox, columnFIO, columnLogin, columnRole, columnPhone, columnEmail, errorText, findForNameField);
         service.initialize();
     }
 
@@ -63,6 +63,10 @@ public class AdminView implements UUIDReceiver {
 
     public void unSelectUser() {
         service.unselectUser();
+    }
+
+    public void findUser(){
+        service.findUser();
     }
 
 

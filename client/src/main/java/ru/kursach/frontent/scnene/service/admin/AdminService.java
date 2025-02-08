@@ -24,9 +24,10 @@ public class AdminService extends BaseService<User> {
     private ChoiceBox<UserRole> roleBox;
     private TableColumn<User, String> columnFIO, columnLogin, columnRole, columnPhone, columnEmail;
     private Text errorText;
+    private TextField findForNameField;
     private final User duplicate = new User();
 
-    public void initialize(){
+    public void initialize() {
         columnFIO.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
         columnRole.setCellValueFactory(new PropertyValueFactory<>("authority"));
@@ -35,6 +36,7 @@ public class AdminService extends BaseService<User> {
         roleBox.getItems().addAll(UserRole.values());
         super.textError = errorText;
         addListeners();
+        update();
     }
 
     public void selectUser() {
@@ -58,7 +60,7 @@ public class AdminService extends BaseService<User> {
                 client.addUser(user);
                 update();
                 unselectUser();
-            } catch ( IOException e) {
+            } catch (IOException e) {
                 log.warn("Ошибка при добавлении пользователя: {}", e.getLocalizedMessage());
             }
         }
@@ -160,7 +162,19 @@ public class AdminService extends BaseService<User> {
         try {
             client.passwordReset(selectedUser);
         } catch (IOException e) {
-            log.warn("Ошибка удаления пользователя: {}", e.getLocalizedMessage());
+            log.warn("Ошибка при удалении пользователя: {}", e.getLocalizedMessage());
+            textError.setText(e.getMessage());
+        }
+    }
+
+    public void findUser() {
+
+        String name = findForNameField.getText();
+        log.debug("Попытка найти пользователя: {}", name);
+        try {
+            System.out.println(client.getUser(name));
+        } catch (IOException e) {
+            log.warn("Ошибка при поиске пользователя: {}", e.getLocalizedMessage());
             textError.setText(e.getMessage());
         }
     }
