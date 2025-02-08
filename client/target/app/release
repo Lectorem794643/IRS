@@ -1,2 +1,0 @@
-JAVA_VERSION="17.0.14"
-MODULES="java.base java.xml ch.qos.logback.core java.logging org.slf4j ch.qos.logback.classic com.fasterxml.jackson.annotation com.fasterxml.jackson.core java.datatransfer java.prefs java.desktop com.fasterxml.jackson.databind java.scripting javafx.base jdk.unsupported javafx.graphics javafx.controls javafx.fxml ru.kursach.frontent"
