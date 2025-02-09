@@ -1,6 +1,5 @@
 package ru.fns.server.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +12,6 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class LookupService {
 
     private final JdbcTemplate jdbcTemplate;
