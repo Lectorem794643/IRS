@@ -76,4 +76,9 @@ public class RequestService extends BaseService<Request> {
     protected Class<Request> getTableViewDataClass() {
         return Request.class;
     }
+
+    public void canceled() {
+        requestSubject.clear();
+        bodySubject.clear();
+    }
 }

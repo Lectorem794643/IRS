@@ -33,7 +33,7 @@ public class TaxService extends BaseService<Tax> {
     }
 
     public void update() {
-        this.fetchData();
+        fetchData();
     }
 
 

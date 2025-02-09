@@ -61,6 +61,7 @@ public class UserView implements UUIDReceiver {
     }
 
     public void canceledRequest() {
+        serviceRequest.canceled();
     }
 
 

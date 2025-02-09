@@ -11,7 +11,7 @@ public class AdminClient extends Client {
     private final String apiUrl = baseUrl + "/admin/users";
 
     public String getAllUser() throws IOException {
-        return get(apiUrl + "?limit=15");
+        return get(apiUrl + "?limit="+limit+"&offset="+offset);
     }
 
     public String getUser(String name) throws IOException {

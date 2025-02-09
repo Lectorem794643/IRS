@@ -2,9 +2,12 @@ package ru.kursach.frontent.scnene.service.worker;
 
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.kursach.frontent.dto.Tax;
+import ru.kursach.frontent.dto.enams.TaxStatus;
+import ru.kursach.frontent.http.api.WorkerClient;
 import ru.kursach.frontent.scnene.service.BaseService;
 
 import java.io.IOException;
@@ -16,7 +19,10 @@ public class TaxService extends BaseService<Tax> {
     private TableColumn<Tax, String> columnTypeTax, columnSumTax, columnStatusTax, columnNameOrganizationsTax, columnFIOTax, columnDateTax;
     private DatePicker dateTax;
     private TextField sumTax;
-    private ComboBox<String> nameOrganizationTax, fioTax, typeTax, statusTax;
+    private ComboBox<String> nameOrganizationTax, fioTax, typeTax;
+    private ComboBox<TaxStatus> statusTax;
+    private final WorkerClient client;
+    private Text errorText;
     private final Tax duplicate = new Tax();
 
     public void init(){
@@ -25,7 +31,9 @@ public class TaxService extends BaseService<Tax> {
         columnFIOTax.setCellValueFactory(new PropertyValueFactory<>("userName"));
         columnTypeTax.setCellValueFactory(new PropertyValueFactory<>("taxType"));
         columnStatusTax.setCellValueFactory(new PropertyValueFactory<>("status"));
+        super.textError = errorText;
         columnSumTax.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        addListeners();
 
     }
 
@@ -45,17 +53,17 @@ public class TaxService extends BaseService<Tax> {
     }
 
     private void addListeners() {
-        addFieldListener(nameOrganizationTax, () -> duplicate.getOrganizationName());
-        addFieldListener(dateTax, () -> duplicate.getPayingDeadline());
-        addFieldListener(fioTax, () -> duplicate.getUserName());
-        addFieldListener(typeTax, () -> duplicate.getTaxType());
-        addFieldListener(statusTax, () -> duplicate.getStatus());
-        addFieldListener(sumTax, () -> duplicate.getSum());
+        addFieldListener(nameOrganizationTax, duplicate::getOrganizationName);
+        addFieldListener(dateTax, duplicate::getPayingDeadline);
+        addFieldListener(fioTax, duplicate::getUserName);
+        addFieldListener(typeTax, duplicate::getTaxType);
+        addFieldListener(statusTax, duplicate::getStatus);
+        addFieldListener(sumTax, duplicate::getSum);
     }
 
     @Override
     protected String getClientResponse() throws IOException {
-        return "";
+        return client.getAllTax();
     }
 
     @Override
@@ -66,5 +74,81 @@ public class TaxService extends BaseService<Tax> {
     @Override
     protected Class<Tax> getTableViewDataClass() {
         return Tax.class;
+    }
+
+    public void update() {
+        canceled();
+        fetchData();
+    }
+
+    public void add() {
+        if (isAnyFieldEmpty()) {
+            highlightEmptyFields();
+        }
+        else {
+            Tax tax = new Tax(fioTax.getValue(),nameOrganizationTax.getValue(), sumTax.getText(), typeTax.getValue(), dateTax.getValue(), statusTax.getValue());
+            try {
+                client.addTax(tax);
+                update();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void change() {
+        if (isAnyFieldEmpty()) {
+            highlightEmptyFields();
+        }
+        else {
+            Tax selectedTax = tableViewTax.getSelectionModel().getSelectedItem();
+            if (selectedTax != null) {
+                selectedTax.setUserName(fioTax.getValue());
+                selectedTax.setTaxType(typeTax.getValue());
+                selectedTax.setStatus(statusTax.getValue());
+                selectedTax.setOrganizationName(nameOrganizationTax.getValue());
+                selectedTax.setPayingDeadline(dateTax.getValue());
+                try {
+                    client.changeTax(selectedTax);
+                    update();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public void delete() {
+        Tax selectedTax = tableViewTax.getSelectionModel().getSelectedItem();
+        if (selectedTax != null) {
+            try {
+                client.deleteTax(selectedTax);
+                update();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void canceled() {
+        fioTax.setValue(null);
+        typeTax.setValue(null);
+        statusTax.setValue(null);
+        sumTax.clear();
+        dateTax.setValue(null);
+        nameOrganizationTax.setValue(null);
+    }
+
+    public void select() {
+        Tax selectedTax = tableViewTax.getSelectionModel().getSelectedItem();
+        if (selectedTax != null) {
+            duplicate.setTax(selectedTax);
+            nameOrganizationTax.setValue(selectedTax.getOrganizationName());
+            fioTax.setValue(selectedTax.getUserName());
+            typeTax.setValue(selectedTax.getTaxType());
+            dateTax.setValue(selectedTax.getPayingDeadline());
+            sumTax.setText(sumTax.getText());
+            statusTax.setValue(selectedTax.getStatus());
+        }
     }
 }

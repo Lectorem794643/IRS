@@ -2,10 +2,12 @@ package ru.kursach.frontent.scnene.service.worker;
 
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.kursach.frontent.dto.Request;
 import ru.kursach.frontent.dto.enams.Status;
+import ru.kursach.frontent.http.api.WorkerClient;
 import ru.kursach.frontent.scnene.service.BaseService;
 
 import java.io.IOException;
@@ -18,6 +20,8 @@ public class RequestService extends BaseService<Request> {
     private TextArea bodySubjectRequest;
     private TableColumn<Request, String> columnThemeRequest, columnStateRequest, columnDateRequest, columnBodyRequest;
     private ComboBox<Status> statusRequest;
+    private final WorkerClient client;
+    private Text errorText;
     private final Request duplicate= new Request();
 
     public void init() {
@@ -25,6 +29,8 @@ public class RequestService extends BaseService<Request> {
         columnDateRequest.setCellValueFactory(new PropertyValueFactory<>("date"));
         columnStateRequest.setCellValueFactory(new PropertyValueFactory<>("status"));
         columnThemeRequest.setCellValueFactory(new PropertyValueFactory<>("theme"));
+        super.textError = errorText;
+        addListeners();
     }
 
 
@@ -40,23 +46,64 @@ public class RequestService extends BaseService<Request> {
     }
 
     private void addListeners() {
-        addFieldListener(requestSubjectRequest, () -> duplicate.getTheme());
-        addFieldListener(bodySubjectRequest, () -> duplicate.getBody());
-        addFieldListener(statusRequest, () -> duplicate.getStatus());
+        addFieldListener(requestSubjectRequest, duplicate::getTheme);
+        addFieldListener(bodySubjectRequest, duplicate::getBody);
+        addFieldListener(statusRequest, duplicate::getStatus);
     }
 
     @Override
     protected String getClientResponse() throws IOException {
-        return "";
+        return client.getAllRequest();
     }
 
     @Override
     protected TableView<Request> getTableView() {
-        return null;
+        return tableViewRequest;
     }
 
     @Override
     protected Class<Request> getTableViewDataClass() {
         return Request.class;
+    }
+
+    public void update() {
+        canceled();
+        fetchData();
+    }
+
+    public void send() {
+        if (isAnyFieldEmpty()) {
+            highlightEmptyFields();
+        }
+        else {
+            Request selectedRequest = tableViewRequest.getSelectionModel().getSelectedItem();
+            if (selectedRequest != null) {
+                selectedRequest.setTheme(requestSubjectRequest.getText());
+                selectedRequest.setBody(bodySubjectRequest.getText());
+                selectedRequest.setStatus(statusRequest.getValue());
+                try {
+                    client.sendRequest(selectedRequest);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                update();
+            }
+        }
+    }
+
+    public void canceled() {
+        requestSubjectRequest.clear();
+        bodySubjectRequest.clear();
+        statusRequest.setValue(null);
+    }
+
+    public void select() {
+        Request selectRequest = tableViewRequest.getSelectionModel().getSelectedItem();
+        if (selectRequest != null) {
+            duplicate.SetRequest(selectRequest);
+            requestSubjectRequest.setText(selectRequest.getTheme());
+            bodySubjectRequest.setText(selectRequest.getBody());
+            statusRequest.setValue(selectRequest.getStatus());
+        }
     }
 }

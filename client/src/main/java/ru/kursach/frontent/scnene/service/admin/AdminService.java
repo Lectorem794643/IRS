@@ -59,7 +59,6 @@ public class AdminService extends BaseService<User> {
             try {
                 client.addUser(user);
                 update();
-                unselectUser();
             } catch (IOException e) {
                 log.warn("Ошибка при добавлении пользователя: {}", e.getLocalizedMessage());
             }

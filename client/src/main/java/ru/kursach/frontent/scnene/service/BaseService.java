@@ -2,6 +2,7 @@ package ru.kursach.frontent.scnene.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
@@ -17,11 +18,15 @@ import java.util.List;
 @Slf4j
 public abstract class BaseService<T> {
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     protected Text textError;
     protected abstract String getClientResponse() throws IOException; // Метод для получения данных (чтобы каждый сервис мог его переопределить)
 
     protected abstract TableView<T> getTableView(); // Метод для получения TableView, который используется в каждом сервисе
 
+    public BaseService() {
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     protected void highlightField(Control field, boolean condition) {
         field.setStyle(condition ? "-fx-background-color: red;" : "-fx-background-color: white;");

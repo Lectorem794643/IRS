@@ -28,7 +28,7 @@ public class AuthService  {
             AuthObject authObject = getUserRole(new AuthRequest(login.getText(), password.getText()));
             UserRole role = authObject.getRole();
             if (role == null) {
-                throw new IllegalArgumentException("Некорректная роль");
+                throw new IllegalArgumentException("Неправильный логин или пароль");
             }
             log.debug("Авторизованная роль: {}", role);
             log.debug("uuid: {}", authObject.getId());
@@ -44,14 +44,16 @@ public class AuthService  {
     }
 
     private AuthObject getUserRole(AuthRequest request) throws IOException {
-        return new ObjectMapper().readValue(client.getUser(request), AuthObject.class);
+        String tmp = client.getUser(request);
+        log.debug(tmp);
+        return new ObjectMapper().readValue(tmp, AuthObject.class);
     }
 
     private void openSceneForRole(UserRole role, UUID uuid) {
         Stage stage = (Stage) welcomeText.getScene().getWindow();
         String scenePath = switch (role) {
             case Admin -> "admin-view.fxml";
-            case Worker -> "worker-view.fxml";
+            case Worker -> "workerScene.fxml";
             case User -> "userScene.fxml";
         };
         HelloApplication.openNewScene(scenePath, uuid);

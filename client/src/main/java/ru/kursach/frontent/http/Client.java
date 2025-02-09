@@ -1,6 +1,7 @@
 package ru.kursach.frontent.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.PropertyChangeListener;
@@ -22,8 +23,13 @@ public class Client {
     protected UUID uuid;
     protected String baseUrl = "http://localhost:8080";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    @Setter
+    protected int limit = 10;
+    @Setter
+    protected int offset = 0;
 
     public Client() {
+
         this.objectMapper = new ObjectMapper();
     }
 

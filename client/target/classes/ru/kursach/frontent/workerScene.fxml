@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kursach.frontent.scnene.WorkerView">
+<VBox prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kursach.frontent.scnene.WorkerView">
   <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
-          <Tab text="Пользователи">
+          <Tab onSelectionChanged="#updateTableUsers" text="Пользователи">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -69,12 +79,17 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                        <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text fx:id="errorTextUser" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </HBox>
                                           <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#updateUsers" style="-fx-background-color: green;" text="Измененить" textFill="WHITE" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledUsers" onMouseClicked="#unSelectUser" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
+                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledUsers" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
@@ -83,7 +98,7 @@
                                     </HBox>
                                  </children>
                               </HBox>
-                              <Button mnemonicParsing="false" onAction="#updateUsers" text="Обновить" GridPane.rowIndex="3">
+                              <Button mnemonicParsing="false" onAction="#updateTableUsers" text="Обновить" GridPane.rowIndex="3">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
@@ -110,11 +125,11 @@
                   </VBox>
                </content>
           </Tab>
-            <Tab text="Запросы">
+            <Tab onSelectionChanged="#updateTableRequest" text="Запросы">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <TableView fx:id="tableViewRequest" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tableViewRequest" onMouseClicked="#selectRequest" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="columnThemeRequest" prefWidth="419.0" text="Тема" />
                               <TableColumn fx:id="columnDateRequest" prefWidth="119.0" text="Дата запроса" />
@@ -130,7 +145,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <Button mnemonicParsing="false" onAction="#upateRequest" onMouseClicked="#updateRequestTable" text="Обновить таблицу" GridPane.rowIndex="3" />
+                              <Button mnemonicParsing="false" onAction="#updateTableRequest" text="Обновить таблицу" GridPane.rowIndex="3" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Тело запроса" GridPane.rowIndex="1" />
                               <TextArea fx:id="bodySubjectRequest" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
@@ -145,12 +160,17 @@
                               </ComboBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#sendRequest" onMouseClicked="#sendRequest" style="-fx-background-color: green;" text="Отправить">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Text fx:id="errorTextRequest" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                       </children>
+                                    </HBox>
+                                    <Button mnemonicParsing="false" onAction="#sendRequest" style="-fx-background-color: green;" text="Отправить">
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledRequest" onMouseClicked="#unSelectUser" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
+                                    <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledRequest" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
@@ -176,11 +196,11 @@
                   </VBox>
                </content>
             </Tab>
-          <Tab text="Налоги">
+          <Tab onSelectionChanged="#updateTableTax" text="Налоги">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <TableView fx:id="tableViewTax" onMouseClicked="#selectUser" prefHeight="298.0" prefWidth="1014.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tableViewTax" onMouseClicked="#selectTax" prefHeight="298.0" prefWidth="1014.0" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn fx:id="columnFIOTax" prefWidth="254.0" text="ФИО" />
                               <TableColumn fx:id="columnNameOrganizationsTax" prefWidth="258.0" text="Название организации" />
@@ -224,6 +244,11 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                        <children>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text fx:id="errorTextTax" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </HBox>
                                           <Button mnemonicParsing="false" onAction="#addRecordTax" style="-fx-background-color: green;" text="Создать налоговую запись" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -239,7 +264,7 @@
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceldTax" onMouseClicked="#unSelectUser" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
+                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledTax" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
@@ -261,7 +286,7 @@
                                     <ComboBox fx:id="typeTax" prefWidth="150.0" />
                                  </children>
                               </HBox>
-                              <Button mnemonicParsing="false" onAction="#updateTax" text="Обновить" GridPane.rowIndex="6">
+                              <Button mnemonicParsing="false" onAction="#updateTableTax" text="Обновить" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
@@ -328,13 +353,13 @@
                   </VBox>
                </content>
           </Tab>
-            <Tab text="Организации">
+            <Tab onSelectionChanged="#updateTableOrganization" text="Организации">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <TableView fx:id="tableViewOrganization" onMouseClicked="#selectUser" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                              <TableView fx:id="tableViewOrganization" onMouseClicked="#selectOrganization" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                  <columns>
                                     <TableColumn fx:id="columnNameOrganization" prefWidth="429.0" text="Название организации" />
                                     <TableColumn fx:id="columnInnOrganization" prefWidth="188.0" text="ИНН" />
@@ -386,18 +411,23 @@
                                  <children>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#addUser" style="-fx-background-color: green;" text="Добавить организацию" textFill="WHITE" />
-                                          <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#updateUser" style="-fx-background-color: green;" text="Изменить" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Text fx:id="errorTextOrganizations" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </HBox>
+                                          <Button mnemonicParsing="false" onAction="#addOrganization" style="-fx-background-color: green;" text="Добавить организацию" textFill="WHITE" />
+                                          <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#updateOrganization" style="-fx-background-color: green;" text="Изменить" textFill="WHITE" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#deleteUser" style="-fx-background-color: red;" text="Удалить организацию" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#deleteOrganization" style="-fx-background-color: red;" text="Удалить организацию" textFill="WHITE" HBox.hgrow="ALWAYS">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledOrganization" onMouseClicked="#unSelectUser" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
+                                          <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#canceledOrganization" style="-fx-background-color: red;" text="Отмена" textFill="WHITE">
                                              <HBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </HBox.margin>
@@ -406,7 +436,7 @@
                                     </HBox>
                                  </children>
                               </HBox>
-                              <Button mnemonicParsing="false" onAction="#update" text="Обновить" GridPane.rowIndex="4">
+                              <Button mnemonicParsing="false" onAction="#updateTableOrganization" text="Обновить" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>

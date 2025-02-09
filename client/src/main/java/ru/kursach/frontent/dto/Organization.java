@@ -1,18 +1,34 @@
 package ru.kursach.frontent.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Organization {
+    @JsonProperty("id")
     private UUID id;
+    @JsonProperty("organization_name")
     private String name;
+    @JsonProperty("inn")
     private String inn;
+    @JsonProperty("kpp")
     private String kpp;
+    @JsonProperty("address")
     private String address;
+
+    public void setOrganization(Organization organization) {
+        this.id = organization.id;
+        this.name = organization.name;
+        this.inn = organization.inn;
+        this.kpp = organization.kpp;
+        this.address = organization.address;
+    }
 }
