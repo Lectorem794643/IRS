@@ -19,7 +19,7 @@ public class WorkerService {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String GET_USER_REQUESTS_SQL = """
-            SELECT r.id, r.theme, r.body, r.date, s.status_name 
+            SELECT r.id, r.theme, r.body, r.date, s.status_name AS status
             FROM requests r
             JOIN status_type s ON r.sid = s.id
             ORDER BY r.date DESC 
@@ -114,7 +114,7 @@ public class WorkerService {
 
     public boolean updateOrganization(UUID id, OrganizationDto organization) {
         int rowsAffected = jdbcTemplate.update(UPDATE_ORGANIZATION_SQL,
-                organization.getOrganizationName(),
+                organization.getOrganization_name(),
                 organization.getInn(),
                 organization.getKpp(),
                 organization.getAddress(),
@@ -131,7 +131,7 @@ public class WorkerService {
     public boolean createOrganization(OrganizationDto organization) {
         int rowsAffected = jdbcTemplate.update(CREATE_ORGANIZATION_SQL,
                 UUID.randomUUID(),
-                organization.getOrganizationName(),
+                organization.getOrganization_name(),
                 organization.getInn(),
                 organization.getKpp(),
                 organization.getAddress()
