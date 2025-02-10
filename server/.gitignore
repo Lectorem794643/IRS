@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 client/src/main/**/target/
 client/src/test/**/target/
-client/target/
+client/target/*
 ### STS ###
 .apt_generated
 .classpath
