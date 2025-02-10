@@ -56,7 +56,7 @@ public class AuthService  {
             case Worker -> "workerScene.fxml";
             case User -> "userScene.fxml";
         };
-        HelloApplication.openNewScene(scenePath, uuid);
+        HelloApplication.openNewScene(scenePath, uuid, role);
         stage.close();
     }
 }

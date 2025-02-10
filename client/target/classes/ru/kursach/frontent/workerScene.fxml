@@ -137,6 +137,26 @@
                               <TableColumn fx:id="columnBodyRequest" prefWidth="376.0" text="Тело" />
                            </columns>
                         </TableView>
+                        <HBox prefHeight="22.0" prefWidth="1024.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="paginationDownRequest" mnemonicParsing="false" onAction="#offsetDownRequest" prefHeight="30.0" prefWidth="200.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="paginationUpRequest" mnemonicParsing="false" onAction="#offsetUpRequest" prefHeight="30.0" prefWidth="200.0" text="&gt;&gt;&gt;" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </HBox>
+                           </children>
+                        </HBox>
                         <GridPane alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <children>
                               <Label text="Тема запроса" />
@@ -213,6 +233,26 @@
                               <Insets />
                            </VBox.margin>
                         </TableView>
+                        <HBox prefHeight="22.0" prefWidth="1024.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="paginationDownTax" mnemonicParsing="false" onAction="#offsetDownTax" prefHeight="30.0" prefWidth="200.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="paginationUpTax" mnemonicParsing="false" onAction="#offsetUpTax" prefHeight="30.0" prefWidth="200.0" text="&gt;&gt;&gt;" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </HBox>
+                           </children>
+                        </HBox>
                         <GridPane cacheHint="QUALITY" depthTest="ENABLE" prefHeight="265.0" prefWidth="1014.0">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ФИО">

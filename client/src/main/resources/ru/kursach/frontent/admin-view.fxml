@@ -49,17 +49,10 @@
             </TableView>
             <HBox prefHeight="22.0" prefWidth="1024.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Button fx:id="paginationDown" mnemonicParsing="false" onAction="#offsetDown" prefHeight="30.0" prefWidth="200.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
-                     </children>
-                     <HBox.margin>
-                        <Insets left="5.0" top="5.0" />
-                     </HBox.margin>
-                  </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="paginationUp" mnemonicParsing="false" onAction="#offsetUp" prefHeight="30.0" prefWidth="200.0" text="&gt;&gt;&gt;" />
+                        <Button fx:id="paginationDown" mnemonicParsing="false" onAction="#offsetDown" prefHeight="30.0" prefWidth="50.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="paginationUp" mnemonicParsing="false" onAction="#offsetUp" prefHeight="30.0" prefWidth="50.0" text="&gt;&gt;&gt;" />
                      </children>
                      <HBox.margin>
                         <Insets right="5.0" top="5.0" />
@@ -159,7 +152,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
                <children>
-                  <ChoiceBox fx:id="roleBox" prefWidth="150.0" HBox.hgrow="ALWAYS">
+                  <ChoiceBox fx:id="roleBox" prefWidth="300.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>

@@ -139,17 +139,10 @@
                         </TableView>
                         <HBox prefHeight="22.0" prefWidth="1024.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Button fx:id="paginationDownRequest" mnemonicParsing="false" onAction="#offsetDownRequest" prefHeight="30.0" prefWidth="200.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </HBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="paginationUpRequest" mnemonicParsing="false" onAction="#offsetUpRequest" prefHeight="30.0" prefWidth="200.0" text="&gt;&gt;&gt;" />
+                                    <Button fx:id="paginationDownRequest" mnemonicParsing="false" onAction="#offsetDownRequest" prefHeight="30.0" prefWidth="50.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="paginationUpRequest" mnemonicParsing="false" onAction="#offsetUpRequest" prefHeight="30.0" prefWidth="50.0" text="&gt;&gt;&gt;" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="5.0" top="5.0" />
@@ -173,7 +166,7 @@
                                  </GridPane.margin>
                               </TextArea>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Статус" GridPane.rowIndex="2" />
-                              <ComboBox fx:id="statusRequest" prefHeight="31.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                              <ComboBox fx:id="statusRequest" prefHeight="31.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
@@ -235,17 +228,10 @@
                         </TableView>
                         <HBox prefHeight="22.0" prefWidth="1024.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Button fx:id="paginationDownTax" mnemonicParsing="false" onAction="#offsetDownTax" prefHeight="30.0" prefWidth="200.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets left="5.0" top="5.0" />
-                                 </HBox.margin>
-                              </HBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button fx:id="paginationUpTax" mnemonicParsing="false" onAction="#offsetUpTax" prefHeight="30.0" prefWidth="200.0" text="&gt;&gt;&gt;" />
+                                    <Button fx:id="paginationDownTax" mnemonicParsing="false" onAction="#offsetDownTax" prefHeight="30.0" prefWidth="50.0" text="&lt;&lt;&lt;" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="paginationUpTax" mnemonicParsing="false" onAction="#offsetUpTax" prefHeight="30.0" prefWidth="50.0" text="&gt;&gt;&gt;" />
                                  </children>
                                  <HBox.margin>
                                     <Insets right="5.0" top="5.0" />
@@ -323,7 +309,7 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                                  <children>
-                                    <ComboBox fx:id="typeTax" prefWidth="150.0" />
+                                    <ComboBox fx:id="typeTax" prefWidth="300.0" />
                                  </children>
                               </HBox>
                               <Button mnemonicParsing="false" onAction="#updateTableTax" text="Обновить" GridPane.rowIndex="6">
@@ -341,12 +327,12 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                                  <children>
-                                    <ComboBox fx:id="statusTax" prefWidth="150.0" />
+                                    <ComboBox fx:id="statusTax" prefWidth="301.0" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                                  <children>
-                                    <ComboBox fx:id="fioTax" prefWidth="150.0" />
+                                    <ComboBox fx:id="fioTax" prefWidth="300.0" />
                                  </children>
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -354,7 +340,7 @@
                               </HBox>
                               <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                                  <children>
-                                    <ComboBox fx:id="nameOrganizationTax" prefWidth="150.0" />
+                                    <ComboBox fx:id="nameOrganizationTax" prefWidth="300.0" />
                                  </children>
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
