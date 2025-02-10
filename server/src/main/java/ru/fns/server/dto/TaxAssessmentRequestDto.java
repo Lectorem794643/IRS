@@ -13,7 +13,7 @@ public class TaxAssessmentRequestDto {
     private String user_name;
     private String organization_name;
     private String tax_type;
-    private double summ;
+    private String summ;
     private LocalDate paying_deadline;
     private String status;
 }
