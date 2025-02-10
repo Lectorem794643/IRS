@@ -1,5 +1,7 @@
 package ru.kursach.frontent.scnene.service.worker;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -11,6 +13,8 @@ import ru.kursach.frontent.http.api.WorkerClient;
 import ru.kursach.frontent.scnene.service.BaseService;
 
 import java.io.IOException;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 @Slf4j
 @AllArgsConstructor
@@ -31,8 +35,14 @@ public class TaxService extends BaseService<Tax> {
         columnFIOTax.setCellValueFactory(new PropertyValueFactory<>("userName"));
         columnTypeTax.setCellValueFactory(new PropertyValueFactory<>("taxType"));
         columnStatusTax.setCellValueFactory(new PropertyValueFactory<>("status"));
-        super.textError = errorText;
         columnSumTax.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        super.textError = errorText;
+        Pattern pattern = Pattern.compile("-?\\d*(\\.\\d*)?");
+        UnaryOperator<TextFormatter.Change> filter = change ->
+                pattern.matcher(change.getControlNewText()).matches() ? change : null;
+
+        sumTax.setTextFormatter(new TextFormatter<>(filter));
+        statusTax.setItems(FXCollections.observableArrayList(TaxStatus.values()));
         addListeners();
 
     }
@@ -79,6 +89,7 @@ public class TaxService extends BaseService<Tax> {
     public void update() {
         canceled();
         fetchData();
+        updateComboBox();
     }
 
     public void add() {
@@ -108,7 +119,9 @@ public class TaxService extends BaseService<Tax> {
                 selectedTax.setStatus(statusTax.getValue());
                 selectedTax.setOrganizationName(nameOrganizationTax.getValue());
                 selectedTax.setPayingDeadline(dateTax.getValue());
+                selectedTax.setSum(sumTax.getText());
                 try {
+
                     client.changeTax(selectedTax);
                     update();
                 } catch (IOException e) {
@@ -147,8 +160,20 @@ public class TaxService extends BaseService<Tax> {
             fioTax.setValue(selectedTax.getUserName());
             typeTax.setValue(selectedTax.getTaxType());
             dateTax.setValue(selectedTax.getPayingDeadline());
-            sumTax.setText(sumTax.getText());
+            sumTax.setText(String.valueOf(selectedTax.getSum()));
             statusTax.setValue(selectedTax.getStatus());
+        }
+    }
+
+    private void updateComboBox(){
+        ObservableList<Tax> items = tableViewTax.getItems();
+        nameOrganizationTax.getItems().clear();
+        fioTax.getItems().clear();
+        typeTax.getItems().clear();
+        for (Tax tax : items) {
+            nameOrganizationTax.getItems().add(tax.getOrganizationName());
+            fioTax.getItems().add(tax.getUserName());
+            typeTax.getItems().add(tax.getTaxType());
         }
     }
 }

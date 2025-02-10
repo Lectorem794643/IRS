@@ -1,5 +1,6 @@
 package ru.kursach.frontent.scnene.service.worker;
 
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -29,7 +30,10 @@ public class RequestService extends BaseService<Request> {
         columnDateRequest.setCellValueFactory(new PropertyValueFactory<>("date"));
         columnStateRequest.setCellValueFactory(new PropertyValueFactory<>("status"));
         columnThemeRequest.setCellValueFactory(new PropertyValueFactory<>("theme"));
+        statusRequest.setItems(FXCollections.observableArrayList(Status.values()));
         super.textError = errorText;
+        requestSubjectRequest.setEditable(false);
+        bodySubjectRequest.setEditable(false);
         addListeners();
     }
 

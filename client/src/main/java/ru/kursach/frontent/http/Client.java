@@ -1,6 +1,7 @@
 package ru.kursach.frontent.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +32,7 @@ public class Client {
     public Client() {
 
         this.objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     public String post(String url, Object object) throws IOException {

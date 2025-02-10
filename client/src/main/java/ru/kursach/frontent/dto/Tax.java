@@ -22,7 +22,7 @@ public class Tax {
     @JsonProperty("organization_name")
     private String organizationName;
     @JsonProperty("summ")
-    private double sum;
+    private String sum;
     @JsonProperty("tax_type")
     private String taxType;
     @JsonProperty("paying_deadline")
@@ -33,7 +33,7 @@ public class Tax {
     public Tax(String userName, String organizationName, String sum, String taxType, LocalDate data, TaxStatus status) {
         this.userName = userName;
         this.organizationName = organizationName;
-        this.sum = Double.parseDouble(sum);
+        this.sum = sum;
         this.taxType = taxType;
         this.payingDeadline = data;
         this.status = status;

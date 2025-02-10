@@ -31,7 +31,7 @@ public class WorkerClient extends Client {
     }
 
     public void sendRequest(Request selectedRequest) throws IOException {
-        put(url+"request/"+selectedRequest.getId());
+        put(url+"request/"+selectedRequest.getId()+"/status?newStatus=" + selectedRequest.getStatus().name());
     }
 
     public void addOrganizations(Organization organization) throws IOException {
@@ -42,11 +42,11 @@ public class WorkerClient extends Client {
         post(url+"tax-assessment", tax);
     }
     public void changeOrganization(Organization organization) throws IOException {
-        put(url+"organization/"+organization.getId(), organization);
+        put(url+"organization/"+organization.getId().toString(), organization);
 
     }
     public void changeTax(Tax tax) throws IOException {
-        put(url+"tax-assessment", tax);
+        put(url+"tax-assessment/"+tax.getId(), tax);
     }
     public void deleteOrganization(Organization organization) throws IOException {
         delete(url+"organization/"+organization.getId());
