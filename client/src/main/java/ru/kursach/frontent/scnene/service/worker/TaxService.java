@@ -27,6 +27,7 @@ public class TaxService extends BaseService<Tax> {
     private ComboBox<TaxStatus> statusTax;
     private final WorkerClient client;
     private Text errorText;
+    private Button paginationDownTax, paginationUpTax;
     private final Tax duplicate = new Tax();
 
     public void init(){
@@ -174,6 +175,34 @@ public class TaxService extends BaseService<Tax> {
             nameOrganizationTax.getItems().add(tax.getOrganizationName());
             fioTax.getItems().add(tax.getUserName());
             typeTax.getItems().add(tax.getTaxType());
+        }
+    }
+
+    public void paginationDown() {
+        paginationUpTax.setDisable(false);
+        ObservableList<Tax> itemsDump = tableViewTax.getItems();
+        if (client.offsetDown()){
+            update();
+        }
+        else {
+            tableViewTax.setItems(itemsDump);
+            update();
+            paginationDownTax.setDisable(true);
+        }
+
+    }
+
+    public void paginationUp() {
+        paginationDownTax.setDisable(false);
+        client.offsetUp();
+        ObservableList<Tax> itemsDump = tableViewTax.getItems();
+        update();
+        ObservableList<Tax> items = tableViewTax.getItems();
+        if(items.isEmpty()){
+            tableViewTax.setItems(itemsDump);
+            paginationUpTax.setDisable(true);
+            client.offsetDown();
+            update();
         }
     }
 }

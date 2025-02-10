@@ -1,9 +1,8 @@
 package ru.kursach.frontent.scnene.service.admin;
 
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.collections.ObservableList;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import lombok.AllArgsConstructor;
@@ -25,6 +24,7 @@ public class AdminService extends BaseService<User> {
     private TableColumn<User, String> columnFIO, columnLogin, columnRole, columnPhone, columnEmail;
     private Text errorText;
     private TextField findForNameField;
+    private Button paginationUp, paginationDown;
     private final User duplicate = new User();
 
     public void initialize() {
@@ -167,14 +167,43 @@ public class AdminService extends BaseService<User> {
     }
 
     public void findUser() {
-
         String name = findForNameField.getText();
         log.debug("Попытка найти пользователя: {}", name);
         try {
-            System.out.println(client.getUser(name));
+            ObjectMapper objectMapper = new ObjectMapper();
+            User[] user = objectMapper.readValue(client.getUser(name), User[].class);
+            tableView.getItems().clear();
+            tableView.getItems().addAll(user);
         } catch (IOException e) {
             log.warn("Ошибка при поиске пользователя: {}", e.getLocalizedMessage());
             textError.setText(e.getMessage());
+        }
+    }
+
+    public void offsetUp() {
+        paginationDown.setDisable(false);
+        ObservableList<User> itemsDump = tableView.getItems();
+        client.offsetUp();
+        update();
+        ObservableList<User> items = tableView.getItems();
+        if (items.isEmpty()){
+            paginationUp.setDisable(true);
+            tableView.setItems(itemsDump);
+            client.offsetDown();
+            update();
+        }
+    }
+
+    public void offsetDown() {
+        paginationUp.setDisable(false);
+        ObservableList<User> itemsDump = tableView.getItems();
+        if(client.offsetDown()){
+            update();
+        }
+        else {
+            tableView.setItems(itemsDump);
+            update();
+            paginationDown.setDisable(true);
         }
     }
 }

@@ -53,6 +53,8 @@ public class WorkerView {
 
     @FXML
     private Text errorTextUser, errorTextTax, errorTextRequest, errorTextOrganizations;
+    @FXML
+    private Button paginationDownRequest, paginationUpRequest, paginationDownTax, paginationUpTax;
     private final WorkerClient client = new WorkerClient();
     private  UserService userService;
     private  RequestService requestService;
@@ -61,8 +63,8 @@ public class WorkerView {
     @FXML
     private void initialize() {
         userService = new UserService(tableViewUsers, phoneUsers, fioUsers, emailUsers, columnPhoneUsers, columnFIOUsers, columnEmailUsers, client, errorTextUser);
-        requestService = new RequestService(tableViewRequest, requestSubjectRequest, bodySubjectRequest, columnThemeRequest, columnStateRequest, columnDateRequest, columnBodyRequest, statusRequest, client, errorTextRequest);
-        taxService = new TaxService(tableViewTax, columnTypeTax, columnSumTax, columnStatusTax, columnNameOrganizationsTax, columnFIOTax, columnDateTax, dateTax, sumTax, nameOrganizationTax, fioTax, typeTax, statusTax, client, errorTextTax);
+        requestService = new RequestService(tableViewRequest, requestSubjectRequest, bodySubjectRequest, columnThemeRequest, columnStateRequest, columnDateRequest, columnBodyRequest, statusRequest, client, errorTextRequest,paginationDownRequest, paginationUpRequest);
+        taxService = new TaxService(tableViewTax, columnTypeTax, columnSumTax, columnStatusTax, columnNameOrganizationsTax, columnFIOTax, columnDateTax, dateTax, sumTax, nameOrganizationTax, fioTax, typeTax, statusTax, client, errorTextTax, paginationDownTax, paginationUpTax);
         organizationService = new OrganizationService(tableViewOrganization, nameOrganization, kppOrganization, innOrganization, addressOrganization, columnNameOrganization, columnKppOrganization, columnInnOrganization, columnAddressOrganization, client, errorTextOrganizations);
         userService.init();
         requestService.init();
@@ -91,6 +93,20 @@ public class WorkerView {
     public void selectRequest() {
         requestService.select();
     }
+
+    public void offsetUpRequest(){
+        requestService.paginationUp();
+    }
+    public void offsetDownRequest() {
+        requestService.paginationDown();
+    }
+    public void offsetDownTax(){
+        taxService.paginationDown();
+    }
+    public void offsetUpTax() {
+        taxService.paginationUp();
+    }
+
     public void updateTableRequest() {
         if (requestService != null)
             requestService.update();

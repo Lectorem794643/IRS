@@ -1,10 +1,7 @@
 package ru.kursach.frontent.scnene;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
 import ru.kursach.frontent.dto.User;
@@ -26,12 +23,17 @@ public class AdminView implements UUIDReceiver {
     private ChoiceBox<UserRole> roleBox;
     @FXML
     private Text errorText;
+    @FXML
+    private Button paginationUp, paginationDown;
     private AdminService service;
 
     public void initialize() {
-        service = new AdminService(tableView, fioField, loginField, emailField, phoneField, roleBox, columnFIO, columnLogin, columnRole, columnPhone, columnEmail, errorText, findForNameField);
+        service = new AdminService(tableView, fioField, loginField, emailField, phoneField, roleBox, columnFIO, columnLogin, columnRole, columnPhone, columnEmail, errorText, findForNameField,paginationUp, paginationDown);
         service.initialize();
     }
+
+    public void offsetUp(){service.offsetUp();}
+    public void offsetDown(){service.offsetDown();}
 
     public void selectUser() {
         service.selectUser();

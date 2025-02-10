@@ -2,7 +2,6 @@ package ru.kursach.frontent.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.beans.PropertyChangeListener;
@@ -24,10 +23,23 @@ public class Client {
     protected UUID uuid;
     protected String baseUrl = "http://localhost:8080";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-    @Setter
     protected int limit = 10;
-    @Setter
     protected int offset = 0;
+    private int multiplierOffset = 0;
+
+    public void offsetUp() {
+        multiplierOffset++;
+        offset = multiplierOffset * limit;
+    }
+
+    public boolean offsetDown() {
+        if (multiplierOffset > 0) {
+            multiplierOffset--;
+            offset = multiplierOffset * limit;
+            return true;
+        }
+        return false;
+    }
 
     public Client() {
 
@@ -42,6 +54,7 @@ public class Client {
     public String put(String url, Object object) throws IOException {
         return sendRequestWithBody(url, "PUT", object);
     }
+
     public String put(String url) throws IOException {
         HttpURLConnection connection = createConnection(url, "PUT", Map.of(
                 "Accept", APPLICATION_JSON

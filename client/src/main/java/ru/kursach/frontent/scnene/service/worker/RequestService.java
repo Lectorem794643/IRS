@@ -1,6 +1,7 @@
 package ru.kursach.frontent.scnene.service.worker;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -23,6 +24,7 @@ public class RequestService extends BaseService<Request> {
     private ComboBox<Status> statusRequest;
     private final WorkerClient client;
     private Text errorText;
+    private Button paginationDownRequest, paginationUpRequest;
     private final Request duplicate= new Request();
 
     public void init() {
@@ -108,6 +110,32 @@ public class RequestService extends BaseService<Request> {
             requestSubjectRequest.setText(selectRequest.getTheme());
             bodySubjectRequest.setText(selectRequest.getBody());
             statusRequest.setValue(selectRequest.getStatus());
+        }
+    }
+
+    public void paginationDown() {
+        paginationUpRequest.setDisable(false);
+        ObservableList<Request> requests = tableViewRequest.getItems();
+        if (client.offsetDown())
+            update();
+        else{
+            paginationDownRequest.setDisable(true);
+            tableViewRequest.setItems(requests);
+            update();
+        }
+    }
+
+    public void paginationUp() {
+        paginationDownRequest.setDisable(false);
+        ObservableList<Request> requestsDump = tableViewRequest.getItems();
+        client.offsetUp();
+        update();
+        ObservableList<Request> requests = tableViewRequest.getItems();
+        if (requests.isEmpty()){
+            paginationUpRequest.setDisable(true);
+            tableViewRequest.setItems(requestsDump);
+            client.offsetDown();
+            update();
         }
     }
 }
